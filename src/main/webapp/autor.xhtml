@@ -16,6 +16,19 @@
 				<h:commandButton value="Gravar" action="#{autorBean.gravar}" />
 			</h:panelGrid>
 		</fieldset>
+		<fieldset>
+			<legend>Lista de Autores</legend>
+			<h:dataTable value="#{autorBean.autores}" var="autor">
+				<h:column>
+					<f:facet name="header">Id</f:facet>
+					<h:outputText value="#{autor.id}" />
+				</h:column>
+				<h:column>
+					<f:facet name="header">Nome</f:facet>
+					<h:outputText value="#{autor.nome}" />
+				</h:column>
+			</h:dataTable>
+		</fieldset>
 	</h:form>
 </h:body>
 </html>

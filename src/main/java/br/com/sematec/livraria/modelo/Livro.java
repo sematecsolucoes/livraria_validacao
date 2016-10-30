@@ -5,15 +5,16 @@ import java.util.Calendar;
 import java.util.List;
 
 public class Livro extends BaseEntity {
+	private static final long serialVersionUID = 1L;
 	private Long id;
 	private String titulo;
 	private String isbn;
 	private double preco;
-	private Calendar dataLancamento = Calendar.getInstance();
-	private List<Autor> autores = new ArrayList<Autor>();
+	private Calendar dataLancamento ;
+	private List<Autor> autores ;
 
 	public Livro() {
-		super();
+		this("", "", Calendar.getInstance(), 0d, new ArrayList<Autor>());
 	}
 
 	public Livro(String isbn, String titulo, Calendar dataLancamento, double preco, List<Autor> autores) {

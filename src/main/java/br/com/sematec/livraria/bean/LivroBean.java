@@ -3,12 +3,15 @@ package br.com.sematec.livraria.bean;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
+
+import org.apache.commons.lang3.StringUtils;
 
 import br.com.sematec.livraria.dao.AutorDAO;
 import br.com.sematec.livraria.dao.LivroDAO;
@@ -22,15 +25,16 @@ public class LivroBean implements Serializable {
 	private Livro livro = new Livro();
 	private Long autorId;
 
-	public void comecaComDigitoUm(FacesContext fc, UIComponent component, Object value) throws ValidatorException {
-		String valor = value.toString();
-		if (!valor.startsWith("1")) {
-			throw new ValidatorException(new FacesMessage("ISBN deveria começar com 1"));
-		}
+	public void adicionarAutor() {
+		Autor autor = AutorDAO.getInstance().buscaPorId(this.autorId);
+		this.livro.adicionaAutor(autor);
+		System.out.println("Escrito por: " + autor.getNome());
 	}
 
-	public List<Autor> getAutores() {
-		return AutorDAO.getInstance().listaTodos();
+	public void comecaCom978(FacesContext fc, UIComponent component, Object value) throws ValidatorException {
+		if (!StringUtils.startsWithIgnoreCase((String) value, "978")) {
+			throw new ValidatorException(new FacesMessage("ISBN deveria começar com 978"));
+		}
 	}
 
 	public List<Autor> getAutoresDoLivro() {
@@ -56,13 +60,13 @@ public class LivroBean implements Serializable {
 			return;
 		}
 		LivroDAO.getInstance().adiciona(this.livro);
-		this.livro = new Livro();
+		init();
 	}
 
-	public void gravarAutor() {
-		Autor autor = AutorDAO.getInstance().buscaPorId(this.autorId);
-		this.livro.adicionaAutor(autor);
-		System.out.println("Escrito por: " + autor.getNome());
+	@PostConstruct
+	private void init() {
+		livro = new Livro();
+		autorId = null;
 	}
 
 	public void setAutorId(Long autorId) {

@@ -1,5 +1,7 @@
 package br.com.sematec.livraria.bean;
 
+import java.util.List;
+
 import javax.faces.bean.ManagedBean;
 
 import br.com.sematec.livraria.dao.AutorDAO;
@@ -11,6 +13,10 @@ public class AutorBean {
 
 	public Autor getAutor() {
 		return autor;
+	}
+
+	public List<Autor> getAutores() {
+		return AutorDAO.getInstance().listaTodos();
 	}
 
 	public void gravar() {
